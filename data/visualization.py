@@ -1,7 +1,8 @@
+# Import
 import matplotlib.pyplot as plt
 from data_collection import get_data
 
-df, train_data, test_data = get_data()
+df, train_data, test_data, scaler = get_data()
 
 # Initial graph
 plt.plot(df["Date"],df["Close"])

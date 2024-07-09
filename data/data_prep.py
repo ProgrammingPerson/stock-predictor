@@ -1,8 +1,9 @@
+# Imports
 import numpy as np
 from data_collection import get_data
 
-def getTrainingX():
-    df, train_data, test_data = get_data()
+def get_training():
+    df, train_data, test_data, scaler = get_data()
     x_train=[]
     y_train = []
 
@@ -16,6 +17,11 @@ def getTrainingX():
     #LSTM model as 3d array
     x_train = np.reshape(x_train,(x_train.shape[0],x_train.shape[1],1))
 
+    return x_train, y_train
+
+def get_test():
+    df, train_data, test_data, scaler = get_data()
+
     x_test=[]
     y_test = test_data['scaled_values']
 
@@ -23,5 +29,5 @@ def getTrainingX():
         x_test.append(test_data['scaled_values'][i-60:i])
     x_test = np.array(x_test)
     x_test = np.reshape(x_test,(x_test.shape[0],x_test.shape[1],1))
-
-    return x_train, y_train
+    
+    return x_test, y_test, scaler

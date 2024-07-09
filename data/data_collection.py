@@ -1,3 +1,4 @@
+# Imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -21,4 +22,4 @@ def get_data():
     train_data = df[df['Date']<'2023-01-01']
     test_data = df[df['Date']>='2023-01-01']
     
-    return df, train_data, test_data
+    return df, train_data, test_data, scaler
