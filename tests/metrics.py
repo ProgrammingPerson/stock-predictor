@@ -2,9 +2,15 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
+from predictor_model import predict_stock
+import sys
+sys.path.insert(0, '/Users/Mohamed/OneDrive/Documents/GitHub/stock-predictor/data')
+from data_collection import get_data
+
+df, train_data, test_data, scaler = get_data()
 
 y_true = test_data[60:]['Close'].values
-y_pred = predicted_stock_price
+y_pred = predict_stock()
 
 mse = mean_squared_error(y_true, y+pred)
 print('MSE: '+str(mse))

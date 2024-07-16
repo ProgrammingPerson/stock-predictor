@@ -6,7 +6,6 @@ from keras.layers import Dense, LSTM, Dropout
 import sys
 sys.path.insert(0, '/Users/Mohamed/OneDrive/Documents/GitHub/stock-predictor/data')
 from data_prep import get_training, get_test
-from sklearn.preprocessing import MinMaxScaler
 import os
 
 def create_model():
@@ -39,25 +38,31 @@ def create_model():
 
     return model
 
-# Creation of LSTM model and displaying of its architecture
-model = create_model()
-model.summary()
 
-# Training/Test data initialization
-x_train, y_train = get_training()
-x_test, y_test, scaler = get_test()
+def train_model(model):
+    # Model summary
+    model.summary()
 
-# Creation of a callback & checkpoint path to save the model's weights
-checkpoint_path = "training/cp.weights.h5"
-checkpoint_dir = os.path.dirname(checkpoint_path)
-cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                save_weights_only=True,
-                                                verbose=1)
+    # Training data initialization
+    x_train, y_train = get_training()
 
-# Model Training
-model.fit(x_train, y_train, epochs = 10, batch_size = 32, callbacks=[cp_callback])
+    # Creation of a callback & checkpoint path to save the model's weights
+    checkpoint_path = "training/cp.weights.h5"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                    save_weights_only=True,
+                                                    verbose=1)
 
-def predict_stock():
+    # Model Training
+    model.fit(x_train, y_train, epochs = 10, batch_size = 32, callbacks=[cp_callback])
+
+def load_model(model, checkpoint_path):
+    model.load_weights(checkpoint_path)
+
+def predict_stock(model, ticker):
+    # Test data initialization
+    x_test, y_test, scaler = get_test(ticker) 
+
     # Prediction on test data
     predicted_stock_price = model.predict(x_test)
     predicted_stock_price = scaler.inverse_transform(predicted_stock_price)
